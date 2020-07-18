@@ -23,6 +23,7 @@ class LinkNode(object):
 
     def __init__(self, value):
         self.value = value  # 存储的值
+        self._next = None
 
     @property
     def next(self):
@@ -49,15 +50,21 @@ class Link(object):
         :param num:
         :return:
         """
+
         link_node = LinkNode(1)
-        temp = link_node
-        next = None
-        for i in range(2, num + 1):
-            next = LinkNode(i)
-            temp.next = next
-            temp = next
-        next.next = None
-        return link_node
+        if num == 1:
+            return link_node
+        elif num <= 0:
+            raise Exception("num 必须大于等于1")
+        else:
+            temp = link_node
+            next = None
+            for i in range(2, num + 1):
+                next = LinkNode(i)
+                temp.next = next
+                temp = next
+            next.next = None
+            return link_node
 
     @staticmethod
     def print_link(link_node):
@@ -66,7 +73,7 @@ class Link(object):
         :param link_node:
         :return:
         """
-        while link_node.next:
+        while link_node:
             print(link_node.value)
             link_node = link_node.next
 
@@ -77,13 +84,21 @@ class LinkHandle(object):
     """
 
     def reverse(self, link_node):
-        while link_node.next:
-            pass
-
+        prev = None
+        while link_node:
+            next = link_node.next
+            link_node.next = prev
+            prev = link_node
+            link_node = next
+        return prev
 
 
 if __name__ == '__main__':
     link_handle = LinkHandle()
-    link_handle.reverse(Link.create_link(20))
+    link_node = Link.create_link(30)
+    Link.print_link(link_node)
+    link_node = link_handle.reverse(link_node)
+    print("*" * 50)
+    Link.print_link(link_node)
 ```
 
